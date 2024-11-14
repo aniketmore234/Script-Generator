@@ -1,8 +1,17 @@
-
 // script.js
 
-// API Endpoint (replace with your actual Google Vertex AI endpoint)
-const GOOGLE_VERTEX_API_URL = 'https://your-api-endpoint-url';
+// Dummy SQL response for demonstration
+const DUMMY_SQL_SCRIPT = `
+-- Sample SQL Script Generated from Image
+CREATE TABLE users (
+  id INT PRIMARY KEY,
+  username VARCHAR(50),
+  email VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users (id, username, email) VALUES (1, 'johndoe', 'johndoe@example.com');
+`;
 
 // Function to handle image upload
 function uploadImage() {
@@ -17,44 +26,12 @@ function uploadImage() {
   // Show loading indicator
   document.getElementById('loading').classList.remove('hidden');
 
-  // Convert the image file to Base64
-  const reader = new FileReader();
-  reader.onload = function () {
-    const base64Image = reader.result.split(',')[1];
-    sendToAPI(base64Image);
-  };
-  reader.readAsDataURL(file);
-}
-
-// Function to send image to Google Vertex AI API
-async function sendToAPI(imageData) {
-  try {
-    const response = await fetch(GOOGLE_VERTEX_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer YOUR_API_KEY'  // Replace with your API key
-      },
-      body: JSON.stringify({
-        image: imageData
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    const data = await response.json();
-
-    // Show SQL output
+  // Simulate processing and showing dummy SQL script
+  setTimeout(() => {
     document.getElementById('loading').classList.add('hidden');
     document.getElementById('outputSection').classList.remove('hidden');
-    document.getElementById('sqlOutput').value = data.sql_script || 'No SQL script generated.';
-  } catch (error) {
-    console.error('Error:', error);
-    alert('An error occurred while processing the image.');
-    document.getElementById('loading').classList.add('hidden');
-  }
+    document.getElementById('sqlOutput').value = DUMMY_SQL_SCRIPT;
+  }, 2000); // Simulating a 2-second delay to mimic processing time
 }
 
 // Function to copy SQL script to clipboard
